@@ -44,7 +44,7 @@ def style_text(text: str, style: TextStyle) -> str:
 
 
 def get_log_file_path() -> str:
-    default_log_file_path = "/var/lib/marzban/access.log"
+    default_log_file_path = "/var/log/remnanode/access.log"
     while True:
         user_input_path = input(
             f"Укажите путь до логов (нажмите Enter для использования '{default_log_file_path}'): "
@@ -108,9 +108,11 @@ def parse_log_entry(log, filter_ip_resource, city_reader, asn_reader):
 
 def extract_email_number(email):
     if email == "Unknown Email":
-        return float('inf')
+        return (float('inf'), "")
     match = re.match(r"(\d+)\..*", email)
-    return int(match.group(1)) if match else email
+    if match:
+        return (int(match.group(1)), email)
+    return (float('inf'), email)
 
 
 def highlight_email(email):
